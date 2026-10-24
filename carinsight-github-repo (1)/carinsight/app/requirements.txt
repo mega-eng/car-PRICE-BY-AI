@@ -1,0 +1,10 @@
+gradio>=4.44
+torch
+torchvision
+transformers
+scikit-learn==1.6.1
+joblib
+scipy
+numpy
+pandas
+pillow
