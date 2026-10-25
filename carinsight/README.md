@@ -12,6 +12,9 @@
 | `src/image_to_price_v2.py` | كود التدريب والتقييم |
 | `notebooks/` | دفتر Colab لإعادة التدريب |
 
+## تجربة التطبيق مباشرة
+[افتح CarInsight AI على Gradio](https://a44cf3ff34de81772a.gradio.live/)
+
 ## عرض اللوحة
 Settings ← Pages ← Branch `main` ← Folder `/docs`. تظهر على `https://USERNAME.github.io/REPO/`
 
