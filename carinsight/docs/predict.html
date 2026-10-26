@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b0b12">
+<title>CarInsight AI — تقدير سعر السيارة</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0b12;--card:#13131d;--line:#292940;--gold:#f5b942;--text:#f4f4f8;--muted:#9ba3b7;--green:#5eead4}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% 0,#21172f,#0b0b12 55%);color:var(--text);font-family:Segoe UI,Tahoma,Arial,sans-serif;line-height:1.7}.wrap{width:min(900px,100%);margin:auto;padding:26px 18px 56px}a{color:var(--gold)}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}.brand{font-weight:800;font-size:19px}.brand b{color:var(--gold)}.back{color:var(--muted);text-decoration:none}.hero{padding:35px 0 22px}.eyebrow{color:var(--gold);font-size:13px;font-weight:700;letter-spacing:.08em}h1{font-size:clamp(30px,6vw,48px);line-height:1.25;margin:8px 0}p{color:var(--muted);margin:8px 0}.panel{background:#13131ddd;border:1px solid var(--line);border-radius:22px;padding:clamp(18px,4vw,30px);box-shadow:0 18px 60px #0003}.drop{border:1px dashed #55516a;border-radius:16px;padding:26px 16px;text-align:center;background:#0d0d16}.drop strong{display:block;font-size:18px}.drop input{display:block;width:100%;margin-top:16px;color:var(--muted)}.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:16px}.btn{border:0;border-radius:999px;padding:12px 22px;font:inherit;font-weight:800;background:var(--gold);color:#1a1305;cursor:pointer}.btn:disabled{opacity:.55;cursor:wait}.hint{font-size:13px}.status{margin-top:16px;padding:12px 14px;border-radius:12px;background:#0b0b12;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}.result{display:none;margin-top:18px;border:1px solid #f5b94266;border-radius:16px;padding:18px;background:linear-gradient(135deg,#2a2132,#12111b)}.result h2{margin:0 0 12px;color:var(--gold);font-size:23px}.result .price{font-size:clamp(26px,6vw,40px);font-weight:800}.range{padding-top:10px;margin-top:10px;border-top:1px solid var(--line)}.foot{font-size:13px;text-align:center;margin-top:24px;color:var(--muted)}code{color:var(--gold)}
+</style></head>
+<body><main class="wrap">
+<header class="top"><div class="brand">CarInsight <b>AI</b></div><a class="back" href="./index.html">العودة إلى لوحة النتائج ←</a></header>
+<section class="hero"><div class="eyebrow">تقدير بصري مدعوم بالذكاء الاصطناعي</div><h1>كم تسوى سيارتك؟</h1><p>ارفع من صورة إلى 8 صور للسيارة للحصول على سعر تقديري بالريال السعودي ونطاقات احتمالية.</p></section>
+<section class="panel">
+<form id="form">
+<label class="drop"><strong>اختر صور السيارة</strong><span class="hint">JPG أو PNG أو WEBP — حتى 8 صور، بحد 12MB للصورة</span><input id="images" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple required></label>
+<div class="row"><button class="btn" id="submit" type="submit">تقدير السعر</button><span class="hint" id="count">لم تُحدّد صور بعد</span></div>
+</form>
+<div class="status" id="status" role="status" aria-live="polite">جارٍ التحقق من اتصال خدمة التقدير…</div>
+<section class="result" id="result" aria-live="polite"><h2>نتيجة التقدير</h2><div id="price" class="price"></div><div id="range80" class="range"></div><div id="range90" class="range"></div><p class="hint">التقدير من الصور فقط، وليس فحصًا فنيًا أو تسعيرًا نهائيًا.</p></section>
+</section>
+<p class="foot">CarInsight AI · لا ترفع صورًا تحتوي على معلومات شخصية حساسة.</p>
+</main>
+<script src="./api-config.js"></script>
+<script>
+const API=(window.CARINSIGHT_API_URL||"").trim().replace(/\/$/,"");
+const $=id=>document.getElementById(id);
+const files=$("images");
+function setStatus(message){$("status").textContent=message}
+function showResult(markdown){
+ const lines=String(markdown||"").split("\n").map(x=>x.trim()).filter(Boolean);
+ const title=(lines.find(x=>x.startsWith("## السعر المقدّر:"))||"").replace(/^##\s*السعر المقدّر:\s*/,"");
+ const r80=(lines.find(x=>x.includes("نطاق 80%"))||"").replace(/^-\s*/,"");
+ const r90=(lines.find(x=>x.includes("نطاق 90%"))||"").replace(/^-\s*/,"");
+ $("price").textContent=title||"تم استلام النتيجة";
+ $("range80").textContent=r80;$("range90").textContent=r90;$("result").style.display="block";
+}
+files.addEventListener("change",()=>{
+ const n=files.files.length;
+ $("count").textContent=n?n+" صورة محددة":"لم تُحدّد صور بعد";
+ if(n>8)setStatus("الحد الأقصى 8 صور.");
+ else setStatus(API?"جاهز لإرسال الصور للتقدير.":"الواجهة جاهزة، لكن رابط خدمة الذكاء الاصطناعي لم يُضبط بعد في ملف api-config.js.");
+});
+$("form").addEventListener("submit",async event=>{
+ event.preventDefault();
+ if(!API){setStatus("يلزم نشر الخلفية أولًا ثم وضع رابطها في carinsight/docs/api-config.js.");return}
+ if(!files.files.length||files.files.length>8){setStatus("اختر من صورة واحدة إلى 8 صور.");return}
+ for(const f of files.files){if(f.size>12*1024*1024){setStatus("الصورة "+f.name+" أكبر من 12MB.");return}}
+ const data=new FormData();for(const f of files.files)data.append("images",f);
+ $("submit").disabled=true;$("result").style.display="none";setStatus("يجري تحليل الصور. قد يستغرق أول طلب وقتًا إضافيًا لتحميل شبكات الصور…");
+ try{
+  const response=await fetch(API+"/predict",{method:"POST",body:data});
+  const payload=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(payload.detail||"فشل الطلب ("+response.status+")");
+  if(!payload.result)throw new Error("لم تصل نتيجة من الخدمة.");
+  showResult(payload.result);setStatus("اكتمل التقدير.");
+ }catch(error){setStatus("تعذر إجراء التقدير: "+error.message+"\nتأكد أن خدمة الخلفية تعمل وأن رابطها مضبوط.");}
+ finally{$("submit").disabled=false}
+});
+async function checkApi(){
+ if(!API){setStatus("الواجهة جاهزة. لتفعيل التنبؤات، انشر الخلفية واتبع تعليمات carinsight/api/README.md ثم ضع رابطها في api-config.js.");return}
+ try{const r=await fetch(API+"/health");if(!r.ok)throw new Error("HTTP "+r.status);const j=await r.json();setStatus(j.status==="ok"?"الخدمة متصلة وجاهزة للتقدير.":"الخدمة متصلة لكن حالتها غير مؤكدة.")}
+ catch(e){setStatus("تعذر الاتصال بالخلفية. تأكد من رابط API وإعدادات CORS.")}
+}
+checkApi();
+</script></body></html>
