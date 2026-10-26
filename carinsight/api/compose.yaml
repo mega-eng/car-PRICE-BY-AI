@@ -1,0 +1,30 @@
+services:
+  api:
+    build:
+      context: ../..
+      dockerfile: carinsight/api/Dockerfile
+    restart: unless-stopped
+    environment:
+      FRONTEND_ORIGINS: "https://mega-eng.github.io"
+    expose:
+      - "8000"
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      API_DOMAIN: ${API_DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+
+volumes:
+  caddy_data:
+  caddy_config:
