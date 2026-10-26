@@ -4,7 +4,7 @@
 
 ## رابط الموقع
 
-🌐 **[افتح CarInsight AI](https://blogs-males-glenn-robots.trycloudflare.com/)**
+🌐 **[افتح CarInsight AI](https://kilometers-defined-conscious-routes.trycloudflare.com/)**
 
 > **ملاحظة مهمة:** المودل مخصص لتقدير أسعار السيارات من موديل **2018 إلى 2026**.
 
