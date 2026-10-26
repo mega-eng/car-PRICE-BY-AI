@@ -15,6 +15,12 @@
 ## تجربة التطبيق مباشرة
 [افتح CarInsight AI على Gradio](https://a44cf3ff34de81772a.gradio.live/)
 
+## الموقع والنشر
+
+- واجهة GitHub Pages الثابتة موجودة في مجلد المستودع الجذري `docs/`، وليست هذا المجلد المتداخل.
+- صفحة تقدير السعر: `https://mega-eng.github.io/car-PRICE-BY-AI/predict.html` بعد تفعيل Pages من `Settings → Pages` واختيار الفرع `main` والمجلد `/docs`.
+- الخلفية موجودة في [`api/`](./api/README.md). يجب نشرها منفصلًا ثم ضبط `docs/api-config.js` برابط API.
+
 ## عرض اللوحة
 Settings ← Pages ← Branch `main` ← Folder `/docs`. تظهر على `https://USERNAME.github.io/REPO/`
 
