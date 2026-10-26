@@ -5,6 +5,7 @@ from pathlib import Path
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.concurrency import run_in_threadpool
 
 MODEL_DIR = Path("/app/model")
 if MODEL_DIR.exists():
@@ -85,7 +86,7 @@ async def predict(images: list[UploadFile] = File(...)):
                 temp_paths.append(str(target))
 
             # The same prediction function used by the original Gradio app.
-            result = model_app.predict(temp_paths)
+            result = await run_in_threadpool(model_app.predict, temp_paths)
             return {"result": result}
     finally:
         for image in images:
