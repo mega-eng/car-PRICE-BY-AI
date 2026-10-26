@@ -22,10 +22,10 @@ Check `http://localhost:8000/health`. The first prediction may take longer while
 
 ## Local development
 
-Install `carinsight/api/requirements.txt`, then from the repository root run:
+Install `carinsight/api/requirements.txt`, then change to the original app folder before starting the API:
 
 ```bash
-uvicorn main:api --app-dir carinsight/api --reload
+cd carinsight/app && uvicorn main:api --app-dir ../api --reload
 ```
 
 The original model bundle must be present at `carinsight/app/bundle.joblib`.
