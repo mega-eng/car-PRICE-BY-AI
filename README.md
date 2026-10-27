@@ -68,7 +68,7 @@ The figures above describe the reported project dataset and evaluation. The READ
 
 - Python
 - PyTorch
-- Hugging Face Transformers
+- Cloudflare Tunnel
 - DINOv2
 - CLIP
 - Gradio
