@@ -5,7 +5,7 @@
 
 Unlike approaches that require manually supplied vehicle details, **the core pricing model uses vehicle photos without make, model, year, or mileage as prediction inputs**. It applies computer vision to visual information and estimates a price in Saudi Riyals (SAR).
 
-🌐 **[Launch CarInsight AI](https://regular-lasting-responsibility-transcript.trycloudflare.com/)** · **[View Source Code](https://github.com/mega-eng/car-PRICE-BY-AI)**
+🌐 **[Launch CarInsight AI](https://coated-least-saints-cancelled.trycloudflare.com/)** · **[View Source Code](https://github.com/mega-eng/car-PRICE-BY-AI)**
 
 > **Demo availability:** The demo runs on a personal machine and may be slow or offline. The temporary hosting URL can change when the session restarts. Uploaded images are processed by the machine hosting the demo; avoid uploading private or sensitive images.
 
